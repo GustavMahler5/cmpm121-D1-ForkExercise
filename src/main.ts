@@ -33,15 +33,37 @@ counterDisplay.id = "counter";
 app.append(counterDisplay);
 
 function updateDisplay() {
-  counterDisplay.textContent = `${counter} Golds`;
+  counterDisplay.textContent = `${Math.floor(counter)} Golds`;
 }
 updateDisplay();
 
-// Auto growth: + 1 every sec(s)
-setInterval(() => {
-  counter += 1;
+// Automatic growth based on real elapsed time
+const growthRate = 1; // Golds per second
+
+let lastTime = performance.now();
+
+function tick(now: number) {
+  const elapsedSeconds = (now - lastTime) / 1000;
+  lastTime = now;
+
+  counter += growthRate * elapsedSeconds;
   updateDisplay();
-}, 1000);
+
+  requestAnimationFrame(tick);
+}
+
+requestAnimationFrame(tick);
+
+// Reset button
+const resetButton = document.createElement("button");
+resetButton.id = "reset-button";
+resetButton.textContent = "Reset";
+app.append(resetButton);
+
+resetButton.addEventListener("click", () => {
+  counter = 0;
+  updateDisplay();
+});
 
 // Click adds to the counter
 clickButton.addEventListener("click", () => {
