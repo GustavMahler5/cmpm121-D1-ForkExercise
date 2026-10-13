@@ -37,6 +37,12 @@ function updateDisplay() {
 }
 updateDisplay();
 
+// Auto growth: + 1 every sec(s)
+setInterval(() => {
+  counter += 1;
+  updateDisplay();
+}, 1000);
+
 // Click adds to the counter
 clickButton.addEventListener("click", () => {
   counter += 1;
