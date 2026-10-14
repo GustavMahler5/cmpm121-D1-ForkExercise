@@ -37,8 +37,34 @@ function updateDisplay() {
 }
 updateDisplay();
 
+//establish upgrade button1
+//add upgrade button, disabled if less than 50 golds
+const upgradeButton1 = document.createElement("button");
+upgradeButton1.id = "upgrade-button1";
+upgradeButton1.textContent = "More Money!";
+upgradeButton1.setAttribute("disabled", "true");
+app.append(upgradeButton1);
+
+//click upgrade button to increase golds per second at initial cost of 50 golds
+upgradeButton1.addEventListener("click", () => {
+  counter -= 50;
+  growthRate += 1;
+  updateDisplay();
+});
+
+//check for counter number to enable upgrade buttons
+function updateClick() {
+  if (counter >= 50) {
+    upgradeButton1.removeAttribute("disabled");
+  } else {
+    upgradeButton1.setAttribute("disabled", "true");
+  }
+}
+updateClick();
+
 // Automatic growth based on real elapsed time
-const growthRate = 1; // Golds per second
+// Also updates clickability of upgrade buttons
+let growthRate: number = 1; // Golds per second
 
 let lastTime = performance.now();
 
@@ -48,6 +74,7 @@ function tick(now: number) {
 
   counter += growthRate * elapsedSeconds;
   updateDisplay();
+  updateClick();
 
   requestAnimationFrame(tick);
 }
@@ -62,6 +89,7 @@ app.append(resetButton);
 
 resetButton.addEventListener("click", () => {
   counter = 0;
+  growthRate = 1;
   updateDisplay();
 });
 
