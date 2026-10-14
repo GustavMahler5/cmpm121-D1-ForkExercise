@@ -32,32 +32,63 @@ const counterDisplay = document.createElement("div");
 counterDisplay.id = "counter";
 app.append(counterDisplay);
 
+//establish upgrade button1 with initial cost of 50 Golds
+const upgradeButton1 = document.createElement("button");
+upgradeButton1.id = "upgrade-button1";
+upgradeButton1.textContent = "More Money! (50 Golds)";
+upgradeButton1.setAttribute("disabled", "true");
+let upgrade1Clicks: number = 50;
+app.append(upgradeButton1);
+
+//establish upgrade button 2 with initial cost of 200 Golds
+const upgradeButton2 = document.createElement("button");
+upgradeButton2.id = "upgrade-button2";
+upgradeButton2.textContent = "Even More Money!";
+upgradeButton2.setAttribute("disabled", "true");
+let upgrade2Clicks: number = 200;
+app.append(upgradeButton2);
+
 function updateDisplay() {
   counterDisplay.textContent = `${Math.floor(counter)} Golds`;
+  upgradeButton1.textContent = `More Money! (${
+    Math.floor(upgrade1Clicks)
+  } Golds)`;
+  upgradeButton2.textContent = `Even More Money! (${
+    Math.floor(upgrade2Clicks)
+  } Golds)`;
 }
 updateDisplay();
 
-//establish upgrade button1
-//add upgrade button, disabled if less than 50 golds
-const upgradeButton1 = document.createElement("button");
-upgradeButton1.id = "upgrade-button1";
-upgradeButton1.textContent = "More Money!";
-upgradeButton1.setAttribute("disabled", "true");
-app.append(upgradeButton1);
-
-//click upgrade button to increase golds per second at initial cost of 50 golds
+//click upgrade button to increase growth rate by 1
+//also increases cost by 1 per use
 upgradeButton1.addEventListener("click", () => {
-  counter -= 50;
+  counter -= upgrade1Clicks;
   growthRate += 1;
+  upgrade1Clicks += 1;
+  updateDisplay();
+});
+
+//click upgrade button 2 to increase growth rate by 10
+//also increases cost by 5 per use
+upgradeButton2.addEventListener("click", () => {
+  counter -= upgrade2Clicks;
+  growthRate += 10;
+  upgrade2Clicks += 5;
   updateDisplay();
 });
 
 //check for counter number to enable upgrade buttons
 function updateClick() {
-  if (counter >= 50) {
+  if (counter >= upgrade1Clicks) {
     upgradeButton1.removeAttribute("disabled");
   } else {
     upgradeButton1.setAttribute("disabled", "true");
+  }
+
+  if (counter >= upgrade2Clicks) {
+    upgradeButton2.removeAttribute("disabled");
+  } else {
+    upgradeButton2.setAttribute("disabled", "true");
   }
 }
 updateClick();
